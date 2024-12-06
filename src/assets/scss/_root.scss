@@ -1,0 +1,18 @@
+@import 'fonts';
+
+$font-family-sans-serif: 'Gogh-regular', sans-serif;
+$font-family-base: $font-family-sans-serif;
+
+$body-color: #26263a;
+$form-select-indicator-color: #00a5ad;
+$form-select-line-height: 22px;
+$form-select-padding-y: 18px;
+$form-select-color: #666674;
+$form-select-border-color: #ccccd1;
+
+$secondary: #e6e6e8;
+$dark: #26263a;
+$info: #00a5ad;
+$badge-border-radius: 30px;
+
+@import 'bootstrap/scss/bootstrap';

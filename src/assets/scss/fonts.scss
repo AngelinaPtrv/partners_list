@@ -1,0 +1,32 @@
+@font-face {
+  font-family: 'Gogh-bold';
+  src:
+    local('Gogh-bold'),
+    url('src/assets/fonts/bold/Gogh-ExtraBold.ttf') format('truetype'),
+    url('src/assets/fonts/bold/Gogh-ExtraBold.woff') format('woff'),
+    url('src/assets/fonts/bold/Gogh-ExtraBold.woff2') format('woff2');
+  font-weight: normal;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'Gogh-regular';
+  src:
+    local('Gosh-condensedBold'),
+    url('src/assets/fonts/regular/Gogh-Regular.ttf') format('truetype'),
+    url('src/assets/fonts/regular/Gogh-Regular.woff') format('woff'),
+    url('src/assets/fonts/regular/Gogh-Regular.woff2') format('woff2');
+  font-weight: normal;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'Gogh-medium';
+  src:
+    local('Gogh-medium'),
+    url('src/assets/fonts/medium/Gogh-Medium.ttf') format('truetype'),
+    url('src/assets/fonts/medium/Gogh-Medium.woff') format('woff'),
+    url('src/assets/fonts/medium/Gogh-Medium.woff2') format('woff2');
+  font-weight: normal;
+  font-style: normal;
+}
