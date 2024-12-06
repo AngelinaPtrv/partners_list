@@ -1,3 +1,5 @@
+import type { IPartner } from '@/interfaces.ts'
+
 export const partners: Array<IPartner> = [
   {
     id: 1,
@@ -84,17 +86,3 @@ export const partners: Array<IPartner> = [
     partnerType: ['Интернет-провайдеры', 'MSP Партнеры'],
   },
 ]
-export interface IPartner {
-  id: number
-  logo: string
-  name: string
-  phone: string
-  email: string
-  website: string
-  status: string
-  country: string
-  city: string
-  productType: string
-  products: Array<string>
-  partnerType: Array<string>
-}

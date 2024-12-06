@@ -1,31 +1,53 @@
 import { ref, computed } from 'vue'
 import { defineStore } from 'pinia'
 import { partners } from '@/data/data.ts'
-import type { IPartner } from '@/data/data.ts'
+import type { IPartner, IOption } from '@/interfaces.ts'
+import {
+  uniqueCities,
+  uniqueCountries,
+  uniquePartnerTypes,
+  uniqueProducts,
+  uniqueProductTypes,
+} from '@/constants.ts'
 
 export const usePartnersStore = defineStore('partners', () => {
-  const partnersList = ref<IPartner[]>([])
+  const partnersList = ref<Array<IPartner>>([])
 
-  const countriesList = computed((): Array<string> => {
-    const countriesArray: Array<string> = partners.map((partner: IPartner) => partner.country)
-    const uniqCountries: Set<string> = new Set(countriesArray)
-    return [...uniqCountries]
+  const countriesList = computed((): Array<IOption> => {
+    const selectedCountries: Array<string> = partnersList.value.map(
+      (partner: IPartner) => partner.country,
+    )
+    const selectedUniqueCountries: Set<string> = new Set(selectedCountries)
+    return uniqueCountries.map((country: string) => ({
+      name: country,
+      disabled: !selectedUniqueCountries.has(country),
+    }))
   })
 
-  const citiesList = computed((): Array<string> => {
-    const citiesArray: Array<string> = partners.map((partner: IPartner) => partner.city)
-    const uniqCities: Set<string> = new Set(citiesArray)
-    return [...uniqCities]
+  const citiesList = computed((): Array<IOption> => {
+    const selectedCities: Array<string> = partnersList.value.map(
+      (partner: IPartner) => partner.city,
+    )
+    const selectedUniqueCities: Set<string> = new Set(selectedCities)
+    return uniqueCities.map((city: string) => ({
+      name: city,
+      disabled: !selectedUniqueCities.has(city),
+    }))
   })
 
-  const productTypes = computed((): Array<string> => {
-    const typesArray: Array<string> = partners.map((partner: IPartner) => partner.productType)
-    const uniqTypes: Set<string> = new Set(typesArray)
-    return [...uniqTypes]
+  const productTypes = computed((): Array<IOption> => {
+    const selectedTypes: Array<string> = partnersList.value.map(
+      (partner: IPartner) => partner.productType,
+    )
+    const selectedUniqueTypes: Set<string> = new Set(selectedTypes)
+    return uniqueProductTypes.map((type: string) => ({
+      name: type,
+      disabled: !selectedUniqueTypes.has(type),
+    }))
   })
 
-  const products = computed((): Array<string> => {
-    const productsArray: Array<string> = partners.reduce(
+  const products = computed((): Array<IOption> => {
+    const selectedProducts: Array<string> = partnersList.value.reduce(
       (acc: Array<string>, partner: IPartner) => {
         partner.products.map((item: string): void => {
           acc.push(item)
@@ -34,12 +56,15 @@ export const usePartnersStore = defineStore('partners', () => {
       },
       [],
     )
-    const uniqProducts: Set<string> = new Set(productsArray)
-    return [...uniqProducts]
+    const uniqueSelectedProducts: Set<string> = new Set(selectedProducts)
+    return uniqueProducts.map((product: string) => ({
+      name: product,
+      disabled: !uniqueSelectedProducts.has(product),
+    }))
   })
 
-  const partnerTypes = computed((): Array<string> => {
-    const partnersArray: Array<string> = partners.reduce(
+  const partnerTypes = computed((): Array<IOption> => {
+    const selectedPartnerTypes: Array<string> = partnersList.value.reduce(
       (acc: Array<string>, partner: IPartner) => {
         partner.partnerType.map((item: string): void => {
           acc.push(item)
@@ -48,8 +73,11 @@ export const usePartnersStore = defineStore('partners', () => {
       },
       [],
     )
-    const uniqTypes: Set<string> = new Set(partnersArray)
-    return [...uniqTypes]
+    const uniqueSelectedPartnerTypes: Set<string> = new Set(selectedPartnerTypes)
+    return uniquePartnerTypes.map((type: string) => ({
+      name: type,
+      disabled: !uniqueSelectedPartnerTypes.has(type),
+    }))
   })
 
   function setPartnersList(payload: Array<IPartner>): void {
@@ -69,7 +97,6 @@ export const usePartnersStore = defineStore('partners', () => {
     product?: string
     partnerType?: Array<string>
   }): void {
-    console.log(arguments)
     partnersList.value = partners.filter(
       (partner: IPartner) =>
         (!country || partner.country === country) &&

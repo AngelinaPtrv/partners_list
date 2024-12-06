@@ -2,18 +2,12 @@
 import { usePartnersStore } from '@/stores/partners.ts'
 import { ref } from 'vue'
 import { partners } from '@/data/data.ts'
+import type { IFilter } from '@/interfaces.ts'
 
+const PLACEHOLDER_VALUE: string = ''
 const partnersList = usePartnersStore()
 
-interface IFilter {
-  country?: string
-  city?: string
-  productType?: string
-  product?: string
-  partnerType?: Array<string>
-}
-
-const filters = ref<IFilter>({ country: '', city: '' })
+const filters = ref<IFilter>({ country: PLACEHOLDER_VALUE, city: PLACEHOLDER_VALUE })
 const selectedPartners = ref<Array<string>>([])
 
 const selectPartner = (partner: string = ''): void => {
@@ -27,7 +21,7 @@ const selectPartner = (partner: string = ''): void => {
 
 const clear = (): void => {
   partnersList.setPartnersList(partners)
-  filters.value = { country: '', city: '' }
+  filters.value = { country: PLACEHOLDER_VALUE, city: PLACEHOLDER_VALUE }
   selectedPartners.value = []
 }
 const filterList = (): void => {
@@ -44,15 +38,25 @@ const filterList = (): void => {
         style="margin-bottom: 16px"
         v-model="filters.country"
       >
-        <option value="" disabled selected>Страна</option>
-        <option v-for="country in partnersList.countriesList" :key="country" :value="country">
-          {{ country }}
+        <option :value="PLACEHOLDER_VALUE" disabled selected>Страна</option>
+        <option
+          v-for="country in partnersList.countriesList"
+          :key="country.name"
+          :value="country.name"
+          :disabled="country.disabled"
+        >
+          {{ country.name }}
         </option>
       </select>
       <select class="form-select filters__select" v-model="filters.city">
-        <option value="" disabled selected>Город</option>
-        <option v-for="city in partnersList.citiesList" :key="city" :value="city">
-          {{ city }}
+        <option :value="PLACEHOLDER_VALUE" disabled selected>Город</option>
+        <option
+          v-for="city in partnersList.citiesList"
+          :key="city.name"
+          :value="city.name"
+          :disabled="city.disabled"
+        >
+          {{ city.name }}
         </option>
       </select>
     </div>
@@ -61,13 +65,14 @@ const filterList = (): void => {
       <div class="btn-group filters-block__buttons" role="group">
         <button
           v-for="type in partnersList.productTypes"
-          :key="type"
+          :key="type.name"
           type="button"
           class="btn bg-secondary filters__chips"
-          :class="{ active: filters.productType === type }"
-          @click="filters.productType = type"
+          :class="{ active: filters.productType === type.name }"
+          @click="filters.productType = type.name"
+          :disabled="type.disabled"
         >
-          {{ type }}
+          {{ type.name }}
         </button>
       </div>
     </div>
@@ -76,13 +81,14 @@ const filterList = (): void => {
       <div class="btn-group filters-block__buttons" role="group">
         <button
           v-for="product in partnersList.products"
-          :key="product"
+          :key="product.name"
           type="button"
           class="btn bg-secondary filters__chips"
-          :class="{ active: filters.product === product }"
-          @click="filters.product = product"
+          :class="{ active: filters.product === product.name }"
+          @click="filters.product = product.name"
+          :disabled="product.disabled"
         >
-          {{ product }}
+          {{ product.name }}
         </button>
       </div>
     </div>
@@ -91,13 +97,14 @@ const filterList = (): void => {
       <div class="btn-group filters-block__buttons" role="group">
         <button
           v-for="partner in partnersList.partnerTypes"
-          :key="partner"
+          :key="partner.name"
           type="button"
           class="btn bg-secondary filters__chips"
-          :class="{ active: selectedPartners.includes(partner) }"
-          @click="selectPartner(partner)"
+          :class="{ active: selectedPartners.includes(partner.name) }"
+          @click="selectPartner(partner.name)"
+          :disabled="partner.disabled"
         >
-          {{ partner }}
+          {{ partner.name }}
         </button>
       </div>
     </div>
